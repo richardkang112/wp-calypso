@@ -54,6 +54,7 @@ class SiteSettingsPerformance extends Component {
 			trackEvent,
 			updateFields,
 			saveJetpackSettings,
+			activateModule,
 		} = this.props;
 		const siteIsJetpackNonAtomic = siteIsJetpack && ! siteIsAtomic;
 
@@ -82,6 +83,7 @@ class SiteSettingsPerformance extends Component {
 					isRequestingSettings={ isRequestingSettings }
 					fields={ fields }
 					trackEvent={ trackEvent }
+					activateModule={ activateModule }
 				/>
 
 				{ siteIsJetpack && (
