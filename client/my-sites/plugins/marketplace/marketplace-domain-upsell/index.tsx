@@ -35,6 +35,7 @@ import ExternalLink from 'calypso/components/external-link';
 import MarketplaceShoppingCart from 'calypso/my-sites/plugins/marketplace/components/marketplace-shopping-cart';
 import theme from 'calypso/my-sites/plugins/marketplace/theme';
 import { MarketplaceHeaderTitle } from 'calypso/my-sites/plugins/marketplace/components';
+import { setPrimaryDomain } from 'calypso/state/plugins/marketplace/actions';
 
 /**
  * Style dependencies
@@ -139,6 +140,7 @@ function CalypsoWrappedMarketplaceDomainUpsell(): JSX.Element {
 			( { product_slug: added_product_slug } ) => added_product_slug === product_slug
 		);
 		setDomainProductUUID( productAdded?.uuid ?? '' );
+		dispatch( setPrimaryDomain( suggestion?.domain_name ) );
 	};
 
 	return (
@@ -177,9 +179,9 @@ function CalypsoWrappedMarketplaceDomainUpsell(): JSX.Element {
 				</div>
 				<div className="marketplace-domain-upsell__shopping-cart-container">
 					<MarketplaceShoppingCart
-						onCheckout={ () =>
-							page( `/checkout${ selectedSite ? `/${ selectedSite.slug }` : '' }` )
-						}
+						onCheckout={ () => {
+							page( `/checkout${ selectedSite ? `/${ selectedSite.slug }` : '' }` );
+						} }
 						selectedDomainProductUUID={ selectedDomainProductUUID }
 						isExpandedBasketView={ isExpandedBasketView }
 						toggleExpandedBasketView={ () => setIsExpandedBasketView( ! isExpandedBasketView ) }
