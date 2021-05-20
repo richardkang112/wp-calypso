@@ -1,9 +1,4 @@
 /**
- * External dependencies
- */
-import { has } from 'lodash';
-
-/**
  * Internal dependencies
  */
 import {
@@ -15,7 +10,7 @@ import {
 import { dispatchRequest } from 'calypso/state/data-layer/wpcom-http/utils';
 import { http } from 'calypso/state/data-layer/wpcom-http/actions';
 import { registerHandlers } from 'calypso/state/data-layer/handler-registry';
-import { replaceHistory } from 'calypso/state/ui/actions';
+import { navigateReplace } from 'calypso/lib/navigate';
 
 import 'calypso/state/gutenberg-iframe-eligible/init';
 
@@ -65,14 +60,9 @@ const setSelectedEditorAndRedirect = ( { siteId, redirectUrl }, { editor_web: ed
 ) => {
 	dispatch( { type: EDITOR_TYPE_SET, siteId, editor } );
 
-	if ( ! redirectUrl ) {
-		return;
+	if ( redirectUrl ) {
+		navigateReplace( redirectUrl );
 	}
-	if ( has( window, 'location.replace' ) && -1 !== redirectUrl.indexOf( 'calypsoify=1' ) ) {
-		return window.location.replace( redirectUrl );
-	}
-
-	dispatch( replaceHistory( redirectUrl ) );
 };
 
 const dispatchUpdateSelectedEditor = dispatchRequest( {
