@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import webdriver from 'selenium-webdriver';
+import { By } from 'selenium-webdriver';
 
 /**
  * Internal dependencies
@@ -9,12 +9,10 @@ import webdriver from 'selenium-webdriver';
 import * as driverHelper from '../../../lib/driver-helper';
 import AsyncBaseContainer from '../../async-base-container';
 
-const by = webdriver.By;
-
 export default class StoreOrdersPage extends AsyncBaseContainer {
 	constructor( driver ) {
-		super( driver, by.css( '.woocommerce .orders__container' ) );
-		this.firstOrderLocator = by.css( '.orders__table .table-row.has-action' );
+		super( driver, By.css( '.woocommerce .orders__container' ) );
+		this.firstOrderLocator = By.css( '.orders__table .table-row.has-action' );
 	}
 
 	async atLeastOneOrderDisplayed() {

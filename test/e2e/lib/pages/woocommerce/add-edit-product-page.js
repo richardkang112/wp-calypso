@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { By as by, until } from 'selenium-webdriver';
+import { By, until } from 'selenium-webdriver';
 
 /**
  * Internal dependencies
@@ -12,27 +12,27 @@ import * as driverHelper from '../../driver-helper';
 
 export default class AddEditProductPage extends AsyncBaseContainer {
 	constructor( driver ) {
-		super( driver, by.css( '.woocommerce .products__product-form-details' ) );
+		super( driver, By.css( '.woocommerce .products__product-form-details' ) );
 	}
 
 	async enterTitle( productTitle ) {
-		return await driverHelper.setWhenSettable( this.driver, by.css( 'input#name' ), productTitle );
+		return await driverHelper.setWhenSettable( this.driver, By.css( 'input#name' ), productTitle );
 	}
 
 	async enterDescription( descriptionText ) {
 		await this.driver.wait(
-			until.ableToSwitchToFrame( by.css( '.mce-edit-area iframe' ) ),
+			until.ableToSwitchToFrame( By.css( '.mce-edit-area iframe' ) ),
 			this.explicitWaitMS,
 			'Could not locate the description editor iFrame.'
 		);
-		await this.driver.findElement( by.css( '#tinymce' ) ).sendKeys( descriptionText );
+		await this.driver.findElement( By.css( '#tinymce' ) ).sendKeys( descriptionText );
 		return await this.driver.switchTo().defaultContent();
 	}
 
 	async addCategory( categoryName ) {
 		return await driverHelper.setWhenSettable(
 			this.driver,
-			by.css( '.products__categories-card input.token-field__input' ),
+			By.css( '.products__categories-card input.token-field__input' ),
 			categoryName
 		);
 	}
@@ -40,7 +40,7 @@ export default class AddEditProductPage extends AsyncBaseContainer {
 	async setPrice( price ) {
 		return await driverHelper.setWhenSettable(
 			this.driver,
-			by.css( '.products__product-form-price input[name="price"]' ),
+			By.css( '.products__product-form-price input[name="price"]' ),
 			price
 		);
 	}
@@ -48,17 +48,17 @@ export default class AddEditProductPage extends AsyncBaseContainer {
 	async setDimensions( length, width, height ) {
 		await driverHelper.setWhenSettable(
 			this.driver,
-			by.css( '.products__product-dimensions-input input[name="length"]' ),
+			By.css( '.products__product-dimensions-input input[name="length"]' ),
 			length
 		);
 		await driverHelper.setWhenSettable(
 			this.driver,
-			by.css( '.products__product-dimensions-input input[name="width"]' ),
+			By.css( '.products__product-dimensions-input input[name="width"]' ),
 			width
 		);
 		return await driverHelper.setWhenSettable(
 			this.driver,
-			by.css( '.products__product-dimensions-input input[name="height"]' ),
+			By.css( '.products__product-dimensions-input input[name="height"]' ),
 			height
 		);
 	}
@@ -66,7 +66,7 @@ export default class AddEditProductPage extends AsyncBaseContainer {
 	async setWeight( weight ) {
 		return await driverHelper.setWhenSettable(
 			this.driver,
-			by.css( '.products__product-weight-input input[name="weight"]' ),
+			By.css( '.products__product-weight-input input[name="weight"]' ),
 			weight
 		);
 	}
@@ -74,7 +74,7 @@ export default class AddEditProductPage extends AsyncBaseContainer {
 	async addQuantity( quantity ) {
 		return await driverHelper.setWhenSettable(
 			this.driver,
-			by.css( '.products__product-manage-stock input[name="stock_quantity"]' ),
+			By.css( '.products__product-manage-stock input[name="stock_quantity"]' ),
 			quantity
 		);
 	}
@@ -82,35 +82,35 @@ export default class AddEditProductPage extends AsyncBaseContainer {
 	async allowBackorders() {
 		return await driverHelper.clickWhenClickable(
 			this.driver,
-			by.css( 'select[name="backorders"] option[value="yes"]' )
+			By.css( 'select[name="backorders"] option[value="yes"]' )
 		);
 	}
 
 	async saveAndPublish() {
 		return await driverHelper.clickWhenClickable(
 			this.driver,
-			by.css( '.action-header__actions button.is-primary' )
+			By.css( '.action-header__actions button.is-primary' )
 		);
 	}
 
 	async deleteProduct() {
-		const menuLocator = by.css( 'button.split-button__toggle' );
+		const menuLocator = By.css( 'button.split-button__toggle' );
 		if ( await driverHelper.isElementLocated( this.driver, menuLocator ) ) {
 			// open the menu on mobile screens
 			await driverHelper.clickWhenClickable( this.driver, menuLocator );
 			await driverHelper.clickWhenClickable(
 				this.driver,
-				by.css( '.popover__menu-item.is-scary' )
+				By.css( '.popover__menu-item.is-scary' )
 			);
 		} else {
 			await driverHelper.clickWhenClickable(
 				this.driver,
-				by.css( '.action-header__actions button.is-scary' )
+				By.css( '.action-header__actions button.is-scary' )
 			);
 		}
 		return await driverHelper.clickWhenClickable(
 			this.driver,
-			by.css( '.dialog__action-buttons button[data-e2e-button="accept"]' )
+			By.css( '.dialog__action-buttons button[data-e2e-button="accept"]' )
 		);
 	}
 }

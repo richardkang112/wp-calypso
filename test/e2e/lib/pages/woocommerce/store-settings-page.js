@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import webdriver from 'selenium-webdriver';
+import { By } from 'selenium-webdriver';
 
 /**
  * Internal dependencies
@@ -10,11 +10,9 @@ import * as driverHelper from '../../driver-helper';
 import AsyncBaseContainer from '../../async-base-container';
 import SectionNavComponent from '../components/section-nav-component';
 
-const by = webdriver.By;
-
 export default class StoreSettingsPage extends AsyncBaseContainer {
 	constructor( driver ) {
-		super( driver, by.css( '.woocommerce .settingsPayments' ) );
+		super( driver, By.css( '.woocommerce .settingsPayments' ) );
 	}
 
 	async selectPaymentsTab() {
@@ -22,14 +20,14 @@ export default class StoreSettingsPage extends AsyncBaseContainer {
 		sectionNav.ensureMobileMenuOpen();
 		return await driverHelper.clickWhenClickable(
 			this.driver,
-			by.css( '.woocommerce .section-nav__panel a[href*=payments]' )
+			By.css( '.woocommerce .section-nav__panel a[href*=payments]' )
 		);
 	}
 
 	async paymentsSettingsDisplayed() {
 		return await driverHelper.isElementEventuallyLocatedAndVisible(
 			this.driver,
-			by.css( '.woocommerce .settingsPayments' )
+			By.css( '.woocommerce .settingsPayments' )
 		);
 	}
 
@@ -38,14 +36,14 @@ export default class StoreSettingsPage extends AsyncBaseContainer {
 		sectionNav.ensureMobileMenuOpen();
 		return await driverHelper.clickWhenClickable(
 			this.driver,
-			by.css( '.woocommerce .section-nav__panel a[href*=shipping]' )
+			By.css( '.woocommerce .section-nav__panel a[href*=shipping]' )
 		);
 	}
 
 	async shippingSettingsDisplayed() {
 		return await driverHelper.isElementEventuallyLocatedAndVisible(
 			this.driver,
-			by.css( '.woocommerce .shipping' )
+			By.css( '.woocommerce .shipping' )
 		);
 	}
 
@@ -54,14 +52,14 @@ export default class StoreSettingsPage extends AsyncBaseContainer {
 		sectionNav.ensureMobileMenuOpen();
 		return await driverHelper.clickWhenClickable(
 			this.driver,
-			by.css( '.woocommerce .section-nav__panel a[href*=taxes]' )
+			By.css( '.woocommerce .section-nav__panel a[href*=taxes]' )
 		);
 	}
 
 	async taxesSettingsDisplayed() {
 		return await driverHelper.isElementEventuallyLocatedAndVisible(
 			this.driver,
-			by.css( '.woocommerce .settings-taxes' )
+			By.css( '.woocommerce .settings-taxes' )
 		);
 	}
 }
