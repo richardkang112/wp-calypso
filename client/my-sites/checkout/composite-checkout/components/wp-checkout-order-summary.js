@@ -13,11 +13,7 @@ import {
 } from '@automattic/composite-checkout';
 import { useTranslate } from 'i18n-calypso';
 import { useShoppingCart } from '@automattic/shopping-cart';
-import {
-	getCouponLineItemFromCart,
-	getTaxLineItemFromCart,
-	getTotalLineItemFromCart,
-} from '@automattic/wpcom-checkout';
+import { getCouponLineItemFromCart, getTaxLineItemFromCart } from '@automattic/wpcom-checkout';
 
 /**
  * Internal dependencies
@@ -29,6 +25,17 @@ import Gridicon from 'calypso/components/gridicon';
 import getPlanFeatures from '../lib/get-plan-features';
 import { hasDomainCredit } from 'calypso/state/sites/plans/selectors';
 
+export function CheckoutSummaryTotal() {
+	const translate = useTranslate();
+	const { responseCart } = useShoppingCart();
+	return (
+		<CheckoutSummaryTotalWrapper>
+			<span>{ translate( 'Total' ) }</span>
+			<span>{ responseCart.total_cost_display }</span>
+		</CheckoutSummaryTotalWrapper>
+	);
+}
+
 export default function WPCheckoutOrderSummary( {
 	siteId,
 	onChangePlanLength,
@@ -39,7 +46,6 @@ export default function WPCheckoutOrderSummary( {
 	const { responseCart } = useShoppingCart();
 	const couponLineItem = getCouponLineItemFromCart( responseCart );
 	const taxLineItem = getTaxLineItemFromCart( responseCart );
-	const totalLineItem = getTotalLineItemFromCart( responseCart );
 
 	const hasRenewalInCart = responseCart.products.some(
 		( product ) => product.extra.purchaseType === 'renewal'
@@ -85,12 +91,7 @@ export default function WPCheckoutOrderSummary( {
 						<span>{ taxLineItem.amount.displayValue }</span>
 					</CheckoutSummaryLineItem>
 				) }
-				<CheckoutSummaryTotal>
-					<span>{ translate( 'Total' ) }</span>
-					<span className="wp-checkout-order-summary__total-price">
-						{ totalLineItem.amount.displayValue }
-					</span>
-				</CheckoutSummaryTotal>
+				<CheckoutSummaryTotal />
 			</CheckoutSummaryAmountWrapper>
 		</CheckoutSummaryCard>
 	);
@@ -377,7 +378,7 @@ const CheckoutSummaryLineItem = styled.div`
 	}
 `;
 
-const CheckoutSummaryTotal = styled( CheckoutSummaryLineItem )`
+const CheckoutSummaryTotalWrapper = styled( CheckoutSummaryLineItem )`
 	font-weight: ${ ( props ) => props.theme.weights.bold };
 `;
 
