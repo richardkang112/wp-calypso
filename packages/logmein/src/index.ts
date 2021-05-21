@@ -5,7 +5,7 @@
 // Used as placeholder / default domain to detect when we're looking at a relative url
 const INVALID_URL = `http://__domain__.invalid`;
 
-export function logmeinUrl( fullUrl: string ): string {
+export function logmeinUrl( fullUrl: string, allow: string[] ): string {
 	let url: URL;
 
 	try {
@@ -17,6 +17,11 @@ export function logmeinUrl( fullUrl: string ): string {
 
 	// Ignore and passthrough /relative/urls that have no host specified
 	if ( url.origin === INVALID_URL ) {
+		return fullUrl;
+	}
+
+	// Ignore urls not in the allow list
+	if ( allow.indexOf( url.origin ) === -1 ) {
 		return fullUrl;
 	}
 
