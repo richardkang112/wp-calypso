@@ -12,6 +12,7 @@ import {
 	getGSuiteSubscriptionId,
 	hasGSuiteWithUs,
 	hasPendingGSuiteUsers,
+	isPendingGSuiteTOSAcceptance,
 } from 'calypso/lib/gsuite';
 import {
 	getConfiguredTitanMailboxCount,
@@ -22,6 +23,7 @@ import {
 } from 'calypso/lib/titan';
 import { getEmailForwardsCount, hasEmailForwards } from 'calypso/lib/domains/email-forwarding';
 import { getByPurchaseId } from 'calypso/state/purchases/selectors';
+import { hasUnverifiedEmailForward } from 'calypso/lib/emails';
 
 export function getNumberOfMailboxesText( domain ) {
 	if ( hasGSuiteWithUs( domain ) ) {
@@ -125,6 +127,10 @@ export function resolveEmailPlanStatus( domain, emailAccount, isLoadingEmails ) 
 	};
 
 	if ( hasGSuiteWithUs( domain ) ) {
+		if ( isPendingGSuiteTOSAcceptance( domain ) ) {
+			return defaultWarningStatus;
+		}
+
 		if ( hasPendingGSuiteUsers( domain ) ) {
 			return defaultWarningStatus;
 		}
@@ -158,6 +164,12 @@ export function resolveEmailPlanStatus( domain, emailAccount, isLoadingEmails ) 
 		}
 
 		return defaultActiveStatus;
+	}
+
+	if ( hasEmailForwards( domain ) && emailAccount ) {
+		if ( hasUnverifiedEmailForward( emailAccount ) ) {
+			return defaultWarningStatus;
+		}
 	}
 
 	return defaultActiveStatus;
